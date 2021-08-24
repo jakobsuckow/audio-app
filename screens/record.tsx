@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-native";
+import { Button, Platform } from "react-native";
 import styled from "styled-components/native";
 import H2 from "../components/text/h2";
 import { RootTabScreenProps } from "../types";
@@ -59,15 +59,34 @@ const Record = (props: Props) => {
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
     console.log("Recording stopped and stored at", uri);
-    
+    setPath(uri);
+  };
+
+  const send = async () => {
+    const formData = new FormData();
+
+    const response = await fetch(path);
+    const blob: Blob = await response.blob();
+
+    formData.append("file", blob);
+
+    const serverRes = await fetch(
+      "https://7c5c-2a02-8109-b6c0-7900-9878-5518-2f33-9a9.ngrok.io/api/v1/audio",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    console.log(await serverRes.status);
   };
 
   return (
     <StyledView>
-      <H2>hi</H2>
+      {/* <H2>hi</H2> */}
       <Button title="dismiss" onPress={() => navigation.goBack()} />
       <Button title="start" onPress={() => startRecording()} />
       <Button title="stop" onPress={() => stopRecording()} />
+      <Button onPress={() => send()} title="Send" />
     </StyledView>
   );
 };
