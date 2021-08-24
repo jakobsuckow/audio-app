@@ -1,7 +1,8 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
+import styled from "styled-components/native";
+import H4 from "../components/text/h4";
+import H2 from "../components/text/h2";
 
 interface Props {
   navigation: RootTabScreenProps<"TabOne">;
@@ -9,22 +10,18 @@ interface Props {
 
 const TabOneScreen = (props: Props) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-    </View>
+    <StyledView>
+      <H4>Hello</H4>
+      <H2>Hello</H2>
+    </StyledView>
   );
 };
 
 export default TabOneScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-});
+const StyledView = styled.View`
+  background-color: #fff;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
