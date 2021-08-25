@@ -46,7 +46,6 @@ const Record = (props: Props) => {
       console.log("Starting recording..");
       const { recording, status } = await Audio.Recording.createAsync(recordingOptions);
       setRecording(recording);
-      console.log(status.durationMillis);
       console.log("Recording started");
     } catch (err) {
       console.error("Failed to start recording", err);
@@ -64,14 +63,16 @@ const Record = (props: Props) => {
 
   const send = async () => {
     const formData = new FormData();
-
     const response = await fetch(path);
     const blob: Blob = await response.blob();
+    const file = new File([blob], "test.caf", {
+      type: "audio/caf",
+    });
 
-    formData.append("file", blob);
+    formData.append("file", file);
 
     const serverRes = await fetch(
-      "https://7c5c-2a02-8109-b6c0-7900-9878-5518-2f33-9a9.ngrok.io/api/v1/audio",
+      "https://7a00-2a02-8109-b6c0-7900-dbd-503-303b-4d70.ngrok.io/api/v1/audio",
       {
         method: "POST",
         body: formData,
@@ -82,7 +83,6 @@ const Record = (props: Props) => {
 
   return (
     <StyledView>
-      {/* <H2>hi</H2> */}
       <Button title="dismiss" onPress={() => navigation.goBack()} />
       <Button title="start" onPress={() => startRecording()} />
       <Button title="stop" onPress={() => stopRecording()} />
